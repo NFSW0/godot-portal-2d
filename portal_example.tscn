@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://blny4224q8m5g"]
+
+[ext_resource type="Script" path="res://portal_example.gd" id="1_0kgdp"]
+[ext_resource type="Shader" path="res://portal/portable_shader.gdshader" id="1_uwy50"]
+[ext_resource type="Texture2D" uid="uid://c4clkvf575in6" path="res://icon.svg" id="2_o16kd"]
+[ext_resource type="PackedScene" uid="uid://ej1kvuhnsjqx" path="res://portal/portal.tscn" id="5_xncj1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h8w4o"]
+shader = ExtResource("1_uwy50")
+shader_parameter/cut_enabled = false
+shader_parameter/cut_line_position = null
+shader_parameter/cut_line_normal = Vector2(0, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j8maj"]
+
+[node name="PortalExample" type="Node2D"]
+script = ExtResource("1_0kgdp")
+
+[node name="SimpleEntity" type="CharacterBody2D" parent="."]
+material = SubResource("ShaderMaterial_h8w4o")
+
+[node name="Icon" type="Sprite2D" parent="SimpleEntity"]
+use_parent_material = true
+scale = Vector2(0.15625, 0.15625)
+texture = ExtResource("2_o16kd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SimpleEntity"]
+shape = SubResource("CircleShape2D_j8maj")
+
+[node name="Portal" parent="." node_paths=PackedStringArray("targe_portal") instance=ExtResource("5_xncj1")]
+position = Vector2(100, 100)
+targe_portal = NodePath("../Portal4")
+
+[node name="Portal3" parent="." node_paths=PackedStringArray("targe_portal") instance=ExtResource("5_xncj1")]
+position = Vector2(200, 200)
+targe_portal = NodePath("../Portal4")
+
+[node name="Portal4" parent="." node_paths=PackedStringArray("targe_portal") instance=ExtResource("5_xncj1")]
+position = Vector2(300, 100)
+targe_portal = NodePath("../Portal")
+
+[node name="Portal5" parent="." node_paths=PackedStringArray("targe_portal") instance=ExtResource("5_xncj1")]
+position = Vector2(400, 200)
+targe_portal = NodePath("../Portal")
