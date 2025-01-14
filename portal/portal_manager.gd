@@ -6,7 +6,7 @@ var request_list:Array[TransportData] = []
 var process_limit = 100 # 进程限制
 
 
-var _transport_tasks:Array[TransportingData] = [] # 进行中的传送，用于判断重复的传送请求
+var _transport_tasks:Array[TransportingData] = [] # 进行中的传送，记录克隆体，用于判断重复的传送请求，特别是因克隆体导致的叠加传送
 
 
 ## 请求-添加传送
@@ -33,8 +33,6 @@ func append_transport_request(data: Dictionary):
 	request_list.push_back(new_request)
 
 
-
-
 ## 请求-结束传送
 func end_transport_request(data: Dictionary):
 	var new_request = TransportData.instantiate(data)
@@ -48,7 +46,7 @@ func end_transport_request(data: Dictionary):
 		# 比较传送门数组
 		var portal_array1 = [transporting_data.portal1, transporting_data.portal2]
 		var portal_array2 = [new_request.portal1, new_request.portal2]
-		if Tool.are_arrays_equal(portal_array1, portal_array2) and transporting_data.targets.has(new_request.target):
+		if Tool.are_arrays_equal(portal_array1, portal_array2) and transporting_data.targets[0] == new_request.target:
 			# 获取节点
 			var node = get_node_or_null(transporting_data.targets[0])
 			var duplicate_node = get_node_or_null(transporting_data.targets[1])
