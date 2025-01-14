@@ -75,23 +75,24 @@ func erase_task(node: Node, duplicate_node: Node):
 
 ## 调试绘制传送门的位置和法线
 func _draw() -> void:
+	if is_instance_valid(targe_portal):
+		draw_line(Vector2(), targe_portal.global_position - position, Color(1,1,0))
+	
 	for task in teleporting_task:
 		var node = task.get("node")
 		var duplicate_node = task.get("duplicate_node")
 		if not is_instance_valid(node) or not is_instance_valid(duplicate_node) or not is_instance_valid(targe_portal):
 			continue
-
-		# 绘制当前传送门的位置
-		draw_circle(global_position, 5, Color(1, 0, 0))  # 红色表示起点
+		
+		draw_circle(Vector2(), 5, Color(1, 0, 0))
 		var normal = (node.global_position - global_position).normalized()
-		draw_line(global_position, global_position + normal * 50, Color(1, 0, 0), 2)  # 红色箭头表示法线
-		# 绘制目标传送门的位置
+		draw_line(Vector2(), Vector2() + normal * 50, Color(1, 0, 0))
+		
 		if is_instance_valid(targe_portal):
-			draw_circle(targe_portal.global_position, 5, Color(0, 1, 0))  # 绿色表示目标
-			# 绘制法线箭头
+			var start_point = targe_portal.global_position - position
+			draw_circle(start_point, 5, Color(0, 1, 0))
 			var normal2 = (duplicate_node.global_position - targe_portal.global_position).normalized()
-			draw_line(targe_portal.global_position, targe_portal.global_position + normal2 * 50, Color(0, 1, 0), 2)  # 绿色箭头表示法线
-
+			draw_line(start_point, start_point + normal2 * 50, Color(0, 1, 0))
 
 
 ## 传送处理
