@@ -14,7 +14,14 @@ script = ExtResource("1_nc6j7")
 shape = SubResource("CircleShape2D_f6aqv")
 
 [node name="Portal1" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("1_k2ur4")
 
 [node name="Portal2" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("2_cl2o4")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

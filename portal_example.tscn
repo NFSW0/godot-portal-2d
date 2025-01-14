@@ -28,17 +28,9 @@ texture = ExtResource("2_o16kd")
 shape = SubResource("CircleShape2D_j8maj")
 
 [node name="Portal" parent="." node_paths=PackedStringArray("targe_portal") instance=ExtResource("5_xncj1")]
-position = Vector2(100, 100)
-targe_portal = NodePath("../Portal4")
+position = Vector2(50, 24)
+targe_portal = NodePath("../Portal2")
 
-[node name="Portal3" parent="." node_paths=PackedStringArray("targe_portal") instance=ExtResource("5_xncj1")]
-position = Vector2(200, 200)
-targe_portal = NodePath("../Portal4")
-
-[node name="Portal4" parent="." node_paths=PackedStringArray("targe_portal") instance=ExtResource("5_xncj1")]
-position = Vector2(300, 100)
-targe_portal = NodePath("../Portal")
-
-[node name="Portal5" parent="." node_paths=PackedStringArray("targe_portal") instance=ExtResource("5_xncj1")]
-position = Vector2(400, 200)
+[node name="Portal2" parent="." node_paths=PackedStringArray("targe_portal") instance=ExtResource("5_xncj1")]
+position = Vector2(77, 89)
 targe_portal = NodePath("../Portal")
