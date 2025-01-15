@@ -8,30 +8,39 @@ class_name Portal
 
 var teleporting_task = []
 
+
 #region 传送自动触发点
 func _on_area_entered(area: Area2D) -> void:
 	var transport_request = _generate_transport_request(area)
-	if is_instance_valid(portal_manager):
+	if is_instance_valid(portal_manager) and transport_request:
 		portal_manager.append_transport_request(transport_request.serialize())
+
 func _on_body_entered(body: Node2D) -> void:
 	var transport_request = _generate_transport_request(body)
-	if is_instance_valid(portal_manager):
+	if is_instance_valid(portal_manager) and transport_request:
 		portal_manager.append_transport_request(transport_request.serialize())
+
 func _on_area_exited(area: Area2D) -> void:
 	var transport_request = _generate_transport_request(area)
-	if is_instance_valid(portal_manager):
+	if is_instance_valid(portal_manager) and transport_request:
 		portal_manager.end_transport_request(transport_request.serialize())
+
 func _on_body_exited(body: Node2D) -> void:
 	var transport_request = _generate_transport_request(body)
-	if is_instance_valid(portal_manager):
+	if is_instance_valid(portal_manager) and transport_request:
 		portal_manager.end_transport_request(transport_request.serialize())
-func _generate_transport_request(node:Node):
+
+func _generate_transport_request(node: Node) -> TransportData:
 	if not targe_portal or not is_instance_valid(node):
-		return
-	while targe_portal.targe_portal != null and targe_portal.targe_portal != self:
-		targe_portal = targe_portal.targe_portal
-	return TransportData.new(self.get_path(), targe_portal.get_path(), node.get_path())
+		return null
+	var final_portal = targe_portal
+	while final_portal and is_instance_valid(final_portal) and final_portal.targe_portal != null:
+		final_portal = final_portal.targe_portal
+	if not is_instance_valid(final_portal):
+		return null
+	return TransportData.new(self.get_path(), final_portal.get_path(), node.get_path())
 #endregion
+
 
 ## 传送开始 开启Shader裁剪
 func add_task(node: Node, duplicate_node: Node):

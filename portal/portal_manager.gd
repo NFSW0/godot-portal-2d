@@ -1,3 +1,4 @@
+## 用于管理传送请求 分配传送任务 处理重复请求
 extends Node
 class_name _PortalManager
 
@@ -71,22 +72,25 @@ func clear_hit_event():
 
 ## 结算传送
 func _physics_process(_delta: float) -> void:
-	var events_to_process = min(request_list.size(), process_limit)
-	for i in range(events_to_process):
-		var transport_data: TransportData = request_list.pop_front()
-		_handle_transport(transport_data.portal1, transport_data.portal2, transport_data.target)
+	_handle_transport_request()
 
 
 ## 处理传送(生成复制体，分配传送门，记录传送中数据)
-func _handle_transport(portal1, portal2, target):
-	var node_portal1 = get_node_or_null(portal1)
-	var node_portal2 = get_node_or_null(portal2)
-	var node_target = get_node_or_null(target)
-	if not node_portal1 or not node_portal2 or not node_target:
-		return
-	var node_target_duplicate = node_target.duplicate()
-	node_target_duplicate.name = node_target.name + "_duplicate"
-	node_target_duplicate.material = (node_target_duplicate.material as ShaderMaterial).duplicate()
-	node_target.get_parent().add_child(node_target_duplicate)
-	_transport_tasks.append(TransportingData.new(portal1, portal2, [target, node_target_duplicate.get_path()]))
-	node_portal1.add_task(node_target, node_target_duplicate)
+func _handle_transport_request():
+	var events_to_process = min(request_list.size(), process_limit)
+	for i in range(events_to_process):
+		var transport_data: TransportData = request_list.pop_front()
+		var portal1 = transport_data.portal1
+		var portal2 = transport_data.portal2
+		var target = transport_data.target
+		var node_portal1 = get_node_or_null(portal1)
+		var node_portal2 = get_node_or_null(portal2)
+		var node_target = get_node_or_null(target)
+		if not node_portal1 or not node_portal2 or not node_target:
+			return
+		var node_target_duplicate = node_target.duplicate()
+		node_target_duplicate.name = node_target.name + "_duplicate"
+		node_target_duplicate.material = (node_target_duplicate.material as ShaderMaterial).duplicate()
+		node_target.get_parent().add_child(node_target_duplicate)
+		_transport_tasks.append(TransportingData.new(portal1, portal2, [target, node_target_duplicate.get_path()]))
+		node_portal1.add_task(node_target, node_target_duplicate)
