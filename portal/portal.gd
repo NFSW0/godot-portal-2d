@@ -68,6 +68,10 @@ func erase_task(node: Node, duplicate_node: Node):
 	var duplicate_node_material = duplicate_node.get("material")
 	if duplicate_node_material is ShaderMaterial:
 		duplicate_node_material.set_shader_parameter("cut_enabled", false)
+	
+	_swap_transforms(node, duplicate_node)
+	
+	duplicate_node.call_deferred("queue_free")
 
 
 ## 调试绘制传送门的位置和法线
